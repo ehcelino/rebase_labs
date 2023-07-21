@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker run \
+  -e POSTGRES_HOST_AUTH_METHOD=trust \
+  -v $(pwd)/postgres-data-rebase-labs:/var/lib/postgresql/data \
+  --rm --name postgres \
+  --network datanet postgres

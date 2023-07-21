@@ -1,10 +1,13 @@
 #!/bin/bash
 
+docker network create datanet
+
 docker run \
   --rm \
   --name rebase-labs \
   -w /app \
   -v $(pwd):/app \
   -p 3000:3000 \
+  --network datanet \
   ruby \
-  bash -c "gem install rack sinatra puma && ruby server.rb"
+  bash -c "gem install rack sinatra puma pg && ruby server.rb"
