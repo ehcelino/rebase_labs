@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+
+  postgres_db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./postgres-data-rebase-labs:/var/lib/postgresql/data
+
+  redis:
+    container_name: redis
+    image: redis
+
+  rebase-labs:
+    container_name: rebase-labs
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./bundle:/usr/local/bundle
+    command: bash -c "bundle && ruby server.rb"
+    ports:
+      - "3000:3000"
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    
+  sidekiq:
+    container_name: sidekiq
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./bundle:/usr/local/bundle
+    environment:
+      REDIS_URL: redis://redis:6379/0            
+    command: bash -c "bundle exec sidekiq -r /app/public/db/importer.rb" 
+    
+  sidekiq_web:
+    image: aschzero/sidekiq-web
+    environment:
+      REDIS_URL: redis://redis:6379
+      SIDEKIQ_USER: sidekiq
+      SIDEKIQ_PASSWORD: sidekiq
+    ports:
+      - 3030:3030

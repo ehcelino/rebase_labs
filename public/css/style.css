@@ -1,0 +1,133 @@
+body,
+textarea,
+input,
+select {
+  background: 0;
+  border-radius: 0;
+  font: 16px sans-serif;
+  margin: 0;
+}
+
+.container {
+  margin: 20px 20px;
+  width: auto;
+}
+
+.table {
+  width: 100%;
+}
+
+.table th,
+.table td {
+  padding: .5em;
+  text-align: left;
+}
+
+.table tbody>:nth-child(2n-1) {
+  background: #ddd;
+}
+
+.btn {
+  background: #5ac;
+  border-radius: 6px;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin: 2px 0;
+  padding: 12px 30px 14px;
+  text-decoration: none;
+}
+
+.btn:active,
+.btn:focus,
+.btn:hover {
+  background: #3399ff;
+}
+
+.btn-sm {
+  border-radius: 4px;
+  padding: 10px 14px 11px;
+}
+
+.btn-sm,
+textarea,
+input,
+select {
+  outline: 0;
+  font-size: 14px;
+}
+
+textarea,
+input,
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  border-color: #5ab;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-2 {
+  margin-bottom: 20px;
+}
+
+#goBack,
+input[type="file"],
+#details,
+#waitMessage {
+  display:none;
+}
+
+.top-banner {
+  background-color: rgb(54, 54, 54);
+  color: rgb(226, 226, 226);
+  height: 60px;
+  padding: 50px;
+}
+
+.action-div {
+  display:flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.links {
+  display:flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  color:#5ab;
+  background-color: #ccc;
+  padding: 20px;
+}
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgb(75, 74, 74);
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

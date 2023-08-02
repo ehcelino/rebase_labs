@@ -1,6 +1,6 @@
 require 'pg'
 
-@conn = PG.connect(host:'postgres', user:'postgres')
+@conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
 
 @conn.exec('DROP TABLE patients CASCADE')
 @conn.exec('DROP TABLE doctors CASCADE')

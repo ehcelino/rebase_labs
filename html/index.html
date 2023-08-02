@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicativo de exames médicos</title>
+  <link rel="shortcut icon" href="localhost:3000/public/favicon.ico" />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="top-banner">
+    <h3>Aplicativo de exames</h3>
+  </div>
+  <div class="links">
+    <a href="/tests" class="btn btn-sm">testes sem formatação</a>
+    <a href="/tests/fmt=json" class="btn btn-sm">testes em formato json</a>
+    <a href="/tests/IQCZ17" class="btn btn-sm">detalhes de um exame</a>
+    <div class="tooltip">
+      <a href="http://localhost:3030/" target="_blank" class="btn btn-sm">fila do sidekiq</a>
+      <span class="tooltiptext">usuário e senha: sidekiq</span>
+    </div>
+  </div>
+  <div class="container">
+    <div id="waitMessage" class="text-center">
+      <p>Por favor aguarde</p>
+    </div>
+    <div class="action-div">
+      <div id="inputFile" class="text-center">
+        <label for="file-upload" class="btn btn-sm">Importar arquivo csv</label>
+        <input id="file-upload" type="file" name="csv" accept=".csv" onchange="loadFile(event)">
+      </div>
+      <div class="search-div text-center">
+        <form onsubmit="return false">
+          <input id="search" type="text" placeholder="token de exame"></input>
+          <button onclick="searchForm()" class="btn btn-sm">Pesquisar</button>
+        </form>
+      </div>
+    </div>
+    <div>
+      <button onclick="goBack()" id="goBack" class="btn btn-sm">Voltar</button>
+    </div>
+    <div id="main_area">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Data</th>
+            <th>CPF</th>
+            <th>Nome</th>
+            <th>Médico</th>
+          </tr>
+        </thead>
+        <tbody id="main">
+        </tbody>
+      </table>
+      <div id="details">
+        <table class="table" id="doctorDetails">
+          <thead>
+            <tr>
+              <th>CRM</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+        </table>
+        <table class="table" id="results">
+          <thead>
+            <tr>
+              <th>Exame</th>
+              <th>Limites</th>
+              <th>Resultado</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
