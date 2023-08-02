@@ -20,6 +20,20 @@ A app foi desenvolvida no princípio SPA (Single Page Application), onde as alte
 
 ## Executando a app
 
-No diretório raiz, execute
-$ bin/run
+No diretório raiz, execute:
 
+`$ bin/run`
+
+## API Endpoints
+
+- /tests
+
+Entrega todos os exames sem formatação a partir do banco de dados
+
+- /tests/fmt=json
+
+Entrega todos os exames em formato json
+
+- /tests/:token
+
+Entrega todos os dados de um exame relacionado ao token em formato json

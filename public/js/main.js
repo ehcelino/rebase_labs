@@ -5,45 +5,55 @@ const tbody2 = document.createElement('tbody')
 let table = document.querySelector('tbody#main');
 const url = 'http://0.0.0.0:3000/tests/fmt=json';
 
-function getInfo(url) {
-  let htmlData = '';
+function getInfo(url, details) {
   fetch(url).
     then((response) => response.json()).
     then((data) => {
-      data.forEach(function(exam) {
-        const patientData = { cpf: exam.cpf, name: exam.name, doctor: exam.doctor.name };
-        const examData = {result_token: exam.result_token, result_date: exam.result_date};
-        const tr = document.createElement('tr');
-        
-        tr.innerHTML += `
-                         <td>${exam['result_token']}</td>
-                         <td>${exam['result_date']}</td>
-                         <td>${exam['cpf']}</td>
-                         <td>${exam['name']}</td>
-                         <td>${exam['doctor']['name']}</td>
-                       `
-        const button = document.createElement('button');
-        button.innerHTML = `Detalhes`;
-        button.classList = 'btn btn-sm btn_details'
-        button.setAttribute('id', `${exam['result_token']}`)
-        button.addEventListener('click', function() {
-          table.innerHTML = ''
-          let queryPath = `http://0.0.0.0:3000/tests/${exam['result_token']}`
-          getInfo(queryPath);
-          getExamDetails(queryPath);
-          button.style.display = "none";
+      if (data.result === "none") {
+        details = 0;
+        document.getElementById('goBack').style.display = "initial";
+        document.getElementById('noResults').style.display = "initial";
+      }else{
+        document.getElementById('noResults').style.display = "none";
+
+        data.forEach(function(exam) {
+          const patientData = { cpf: exam.cpf, name: exam.name, doctor: exam.doctor.name };
+          const examData = {result_token: exam.result_token, result_date: exam.result_date};
+          const tr = document.createElement('tr');
+          
+          tr.innerHTML += `
+                          <td>${exam['result_token']}</td>
+                          <td>${exam['result_date']}</td>
+                          <td>${exam['cpf']}</td>
+                          <td>${exam['name']}</td>
+                          <td>${exam['doctor']['name']}</td>
+                        `
+          const button = document.createElement('button');
+          button.innerHTML = `Detalhes`;
+          button.classList = 'btn btn-sm btn_details'
+          button.setAttribute('id', `${exam['result_token']}`)
+          button.addEventListener('click', function() {
+            table.innerHTML = ''
+            let queryPath = `http://0.0.0.0:3000/tests/${exam['result_token']}`
+            getInfo(queryPath);
+            getExamDetails(queryPath);
+            button.style.display = "none";
+          })
+          tdBtn = document.createElement('td');
+          tdBtn.appendChild(button);  
+          tr.appendChild(tdBtn);
+          fragment.appendChild(tr);
         })
-        tdBtn = document.createElement('td');
-        tdBtn.appendChild(button);  
-        tr.appendChild(tdBtn);
-        fragment.appendChild(tr);
-      })
+      }
     }).
     then(() => {
       table.appendChild(fragment);
+      if (details === 1) {
+        getExamDetails(url)
+      }
     }).
     catch(function(err) {
-      console.log(err);
+      console.log("erro", err);
     });
 }
 
@@ -87,20 +97,20 @@ function searchForm() {
   if(query != ''){
     table.innerHTML = ''
     let queryPath = `http://0.0.0.0:3000/tests/${query}`
-    getInfo(queryPath);
-    getExamDetails(queryPath);
+    getInfo(queryPath, 1);
   }else{
     table.innerHTML = ''
-    getInfo(url)
+    getInfo(url, 0)
     document.getElementById('details').style.display = "none"
   }
 }
 
 function goBack() {
   table.innerHTML = ''
-  getInfo(url)
+  getInfo(url, 0)
   document.getElementById('goBack').style.display = "none"
   document.getElementById('details').style.display = "none"
+  document.getElementById('noResults').style.display = "none";
 }
 
 async function loadFile(event){
@@ -114,7 +124,7 @@ async function loadFile(event){
   then(() => {
     setTimeout(() => {
       document.getElementById('waitMessage').style.display = "none"
-      getInfo(url);
+      getInfo(url, 0);
     }, 15000);
   }).
   catch(function(err) {
@@ -122,4 +132,4 @@ async function loadFile(event){
   });
 }
 
-window.onload = getInfo(url);
+window.onload = getInfo(url, 0);

@@ -82,7 +82,8 @@ select:focus {
 #goBack,
 input[type="file"],
 #details,
-#waitMessage {
+#waitMessage,
+#noResults {
   display:none;
 }
 
