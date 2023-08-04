@@ -5,7 +5,16 @@ class TransferData
 
   def self.make_transfer(csv, option = '')
     puts 'Iniciando importação do arquivo - aguarde...'
-    conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    if ENV['APP_ENV'] == 'test'
+      begin
+        PG.connect(host:'postgres', user:'postgres', password:'postgres').exec('CREATE DATABASE test')
+      rescue
+        puts 'Database teste já existe'
+      end
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
+    else
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    end
     hash_data = self.read_csv(csv, option)
     self.create_tables(conn)
     hash_data.each do |row|

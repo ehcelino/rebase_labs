@@ -27,7 +27,10 @@ services:
       - "3000:3000"
     environment:
       REDIS_URL: redis://redis:6379/0
-    
+    depends_on:
+      - postgres_db
+      - redis
+
   sidekiq:
     container_name: sidekiq
     image: ruby
@@ -38,6 +41,9 @@ services:
     environment:
       REDIS_URL: redis://redis:6379/0            
     command: bash -c "bundle exec sidekiq -r /app/public/db/importer.rb" 
+    depends_on:
+      - rebase-labs
+      - redis
     
   sidekiq_web:
     image: aschzero/sidekiq-web
@@ -47,3 +53,5 @@ services:
       SIDEKIQ_PASSWORD: sidekiq
     ports:
       - 3030:3030
+    depends_on:
+      - sidekiq
