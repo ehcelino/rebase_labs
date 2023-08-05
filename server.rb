@@ -1,8 +1,8 @@
 require 'sinatra'
 require 'rack/handler/puma'
 require 'rack'
-require_relative './public/db/retrieve'
-require_relative './public/db/importer'
+require_relative './core/retrieve'
+require_relative './core/importer'
 
 before do
   headers 'Access-Control-Allow-Origin'  => 'http://localhost:3000',

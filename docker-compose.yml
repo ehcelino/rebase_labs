@@ -40,7 +40,7 @@ services:
       - ./bundle:/usr/local/bundle
     environment:
       REDIS_URL: redis://redis:6379/0            
-    command: bash -c "bundle exec sidekiq -r /app/public/db/importer.rb" 
+    command: bash -c "bundle exec sidekiq -r /app/core/importer.rb" 
     depends_on:
       - rebase-labs
       - redis

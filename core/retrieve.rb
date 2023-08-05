@@ -3,7 +3,11 @@ require 'pg'
 
 class Retrieve
   def self.generate_json
-    conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    if ENV['APP_ENV'] == 'test'
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
+    else
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    end
     sql = 'SELECT patients.cpf AS "cpf",
                   patients.name AS "nome paciente",
                   patients.email AS "email paciente",
@@ -38,7 +42,11 @@ end
 
 class PatientData
   def self.generate_json
-    conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    if ENV['APP_ENV'] == 'test'
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
+    else
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    end
     sql = 'SELECT exams.token AS "result_token",
                   exams.date AS "result_date",
                   patients.cpf AS "cpf",
@@ -68,7 +76,7 @@ class PatientData
 
   def self.select_info(array)
     if array == []
-      return {"result": "none"}.to_json
+      return {result: "none"}.to_json
     end
     result = []
     hash_token = []
@@ -78,24 +86,24 @@ class PatientData
     temp_array = []
     array.each_with_index do |hash, idx|
       if hash_token.include? hash["result_token"]
-        temp_hash.merge!({"result_token": "#{hash['result_token']}", "result_date": "#{hash['result_date']}", "cpf": "#{hash['cpf']}", 
-                          "name": "#{hash['name']}", "email": "#{hash['email']}", "birthday": "#{hash['birthday']}",
-                          "doctor": {"crm": "#{hash['crm']}", "crm_state": "#{hash['crm_state']}", "name": "#{hash['doctors_name']}"}}) 
-        temp_array << {"type": "#{hash['type']}", "limits": "#{hash['limits']}", "result": "#{hash['result']}"}
+        temp_hash.merge!({result_token: "#{hash['result_token']}", result_date: "#{hash['result_date']}", cpf: "#{hash['cpf']}", 
+                          name: "#{hash['name']}", email: "#{hash['email']}", birthday: "#{hash['birthday']}",
+                          doctor: {crm: "#{hash['crm']}", crm_state: "#{hash['crm_state']}", name: "#{hash['doctors_name']}"}}) 
+        temp_array << {type: "#{hash['type']}", limits: "#{hash['limits']}", result: "#{hash['result']}"}
         hash_token << hash["result_token"]
       else
-        temp_hash.merge!("tests": temp_array)
+        temp_hash.merge!(tests: temp_array)
         result << temp_hash
         temp_array = []
         temp_hash = Hash.new
-        temp_hash.merge!({"result_token": "#{hash['result_token']}", "result_date": "#{hash['result_date']}", "cpf": "#{hash['cpf']}", 
-                          "name": "#{hash['name']}", "email": "#{hash['email']}", "birthday": "#{hash['birthday']}",
-                          "doctor": {"crm": "#{hash['crm']}", "crm_state": "#{hash['crm_state']}", "name": "#{hash['doctors_name']}"}})
-        temp_array << {"type": "#{hash['type']}", "limits": "#{hash['limits']}", "result": "#{hash['result']}"}
+        temp_hash.merge!({result_token: "#{hash['result_token']}", result_date: "#{hash['result_date']}", cpf: "#{hash['cpf']}", 
+                          name: "#{hash['name']}", email: "#{hash['email']}", birthday: "#{hash['birthday']}",
+                          doctor: {crm: "#{hash['crm']}", crm_state: "#{hash['crm_state']}", name: "#{hash['doctors_name']}"}})
+        temp_array << {type: "#{hash['type']}", limits: "#{hash['limits']}", result: "#{hash['result']}"}
         hash_token << hash["result_token"]
       end
       if idx == array.length-1
-        temp_hash.merge!("tests": temp_array)
+        temp_hash.merge!(tests: temp_array)
         result << temp_hash
       end
     end
@@ -103,7 +111,11 @@ class PatientData
   end
 
   def self.search(token)
-    conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    if ENV['APP_ENV'] == 'test'
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
+    else
+      conn = PG.connect(host:'postgres', user:'postgres', password:'postgres')
+    end
     sql = 'SELECT exams.token AS "result_token",
                   exams.date AS "result_date",
                   patients.cpf AS "cpf",

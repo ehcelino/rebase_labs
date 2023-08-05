@@ -1,3 +1,3 @@
-require_relative './public/db/import'
+require_relative './core/import'
 
 TransferData.make_transfer("./public/support/data.csv", "file")

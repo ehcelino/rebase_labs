@@ -1,7 +1,8 @@
 require_relative 'spec_helper'
-require_relative '../public/db/import'
-require_relative '../public/db/retrieve'
+require_relative '../core/import'
+require_relative '../core/retrieve'
 require 'csv'
+require 'json'
 
 describe 'Método que' do
   it 'retorna todos os registros do banco de dados como string' do
@@ -19,7 +20,7 @@ describe 'Método que' do
     expect(records).to include 'Matheus Barroso'
   end
 
-  it 'retorna todos os registros do banco de dados como json' do
+  it 'retorna todos os registros do banco de dados organizados' do
     # Arrange
     file = File.open('./spec/support/data.csv')
     

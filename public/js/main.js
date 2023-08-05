@@ -17,24 +17,25 @@ function getInfo(url, details) {
         document.getElementById('noResults').style.display = "none";
 
         data.forEach(function(exam) {
-          const patientData = { cpf: exam.cpf, name: exam.name, doctor: exam.doctor.name };
-          const examData = {result_token: exam.result_token, result_date: exam.result_date};
+          // const patientData = { cpf: exam.cpf, name: exam.name, doctor: exam.doctor.name };
+          // const examData = {result_token: exam.result_token, result_date: exam.result_date};
           const tr = document.createElement('tr');
           
           tr.innerHTML += `
-                          <td>${exam['result_token']}</td>
-                          <td>${exam['result_date']}</td>
-                          <td>${exam['cpf']}</td>
-                          <td>${exam['name']}</td>
-                          <td>${exam['doctor']['name']}</td>
+                          <td>${exam.result_token}</td>
+                          <td>${new Date(exam.result_date).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</td>
+                          <td>${exam.cpf}</td>
+                          <td>${exam.name}</td>
+                          <td>${new Date(exam.birthday).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</td>
+                          <td>${exam.doctor.name}</td>
                         `
           const button = document.createElement('button');
           button.innerHTML = `Detalhes`;
           button.classList = 'btn btn-sm btn_details'
-          button.setAttribute('id', `${exam['result_token']}`)
+          button.setAttribute('id', `${exam.result_token}`)
           button.addEventListener('click', function() {
             table.innerHTML = ''
-            let queryPath = `http://0.0.0.0:3000/tests/${exam['result_token']}`
+            let queryPath = `http://0.0.0.0:3000/tests/${exam.result_token}`
             getInfo(queryPath);
             getExamDetails(queryPath);
             button.style.display = "none";
@@ -72,9 +73,9 @@ function getExamDetails(url) {
 
         examDetails.forEach(data => {
           htmlData += `<tr>
-                         <td>${data['type']}</td>
-                         <td>${data['limits']}</td>
-                         <td>${data['result']}</td>
+                         <td>${data.type}</td>
+                         <td>${data.limits}</td>
+                         <td>${data.result}</td>
                        </tr>`
         });
         tbody.innerHTML = htmlData;

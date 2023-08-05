@@ -4,12 +4,10 @@ require 'pg'
 class TransferData
 
   def self.make_transfer(csv, option = '')
-    puts 'Iniciando importação do arquivo - aguarde...'
     if ENV['APP_ENV'] == 'test'
       begin
         PG.connect(host:'postgres', user:'postgres', password:'postgres').exec('CREATE DATABASE test')
       rescue
-        puts 'Database teste já existe'
       end
       conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
     else
@@ -24,7 +22,6 @@ class TransferData
       self.insert_exams(row, conn)
     end
     conn.close
-    puts 'Importação do arquivo finalizada.'
   end
 
   def self.create_tables(conn)
