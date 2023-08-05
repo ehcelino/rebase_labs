@@ -3,7 +3,7 @@ const tbody = document.createElement('tbody')
 const tbody1 = document.createElement('tbody')
 const tbody2 = document.createElement('tbody')
 let table = document.querySelector('tbody#main');
-const url = 'http://0.0.0.0:3000/tests/fmt=json';
+var url = 'http://0.0.0.0:3000/tests/fmt=json';
 
 function getInfo(url, details) {
   fetch(url).
@@ -131,6 +131,23 @@ async function loadFile(event){
   catch(function(err) {
     console.log(err);
   });
+}
+
+var GET = {};
+var query = window.location.search.substring(1).split("&");
+for (var i = 0, max = query.length; i < max; i++)
+{
+    if (query[i] === "")
+        continue;
+
+    var param = query[i].split("=");
+    GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
+}
+
+if (GET.env === 'test') {
+  url = 'http://rebase-labs:3000/tests/fmt=json';
+}else{
+  url = 'http://0.0.0.0:3000/tests/fmt=json';
 }
 
 window.onload = getInfo(url, 0);

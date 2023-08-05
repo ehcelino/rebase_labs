@@ -28,6 +28,12 @@ get '/index' do
   File.open('html/index.html')
 end
 
+get '/index?env=test' do
+  content_type :html
+  File.open('html/index.html')
+end
+
+
 post '/import' do
   file = request.body.read
   Importer.perform_async(file)
