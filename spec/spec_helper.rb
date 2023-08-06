@@ -27,13 +27,7 @@ RSpec.configure do |config|
   config.before(type: :system) do
     driven_by(:rack_test)
   end
-
-  config.after :each do
-    conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
-    # conn.exec('DELETE FROM exams; DELETE FROM tokens; DELETE FROM patients; DELETE FROM doctors;')
-    conn.exec('DROP TABLE exams; DROP TABLE tokens; DROP TABLE patients; DROP TABLE doctors;')
-  end
-
+  
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods

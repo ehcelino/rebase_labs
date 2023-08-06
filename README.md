@@ -52,7 +52,7 @@ Entrega todos os dados de um exame relacionado ao token em formato json
 
 ## URL's do app
 
-- http://localhost:3000/index
+- http://localhost:3000/index ou http://localhost:3000/
 
 Página principal do app
 

@@ -23,6 +23,10 @@ get '/tests/:token' do
   PatientData.search(params['token'])
 end
 
+get '/' do
+  redirect '/index'
+end
+
 get '/index' do
   content_type :html
   File.open('html/index.html')
@@ -32,7 +36,6 @@ get '/index?env=test' do
   content_type :html
   File.open('html/index.html')
 end
-
 
 post '/import' do
   file = request.body.read

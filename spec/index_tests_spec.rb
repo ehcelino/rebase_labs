@@ -30,8 +30,6 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
   it 'e vê as informações da página' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
 
     # Act
     visit('/index?env=test')
@@ -73,8 +71,6 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
   it 'e vê os exames listados' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
 
     # Act
     visit('/index?env=test')
@@ -97,9 +93,7 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
   it 'e vê detalhes de um exame' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
-
+    
     # Act
     visit('/index?env=test')
     find(:css, '#IQCZ17').click
@@ -124,8 +118,6 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
   it 'e busca por um token de exame' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
 
     # Act
     visit('/index?env=test')
@@ -152,8 +144,6 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
   it 'e abre a listagem de exames sem formatação' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
 
     # Act
     visit('/index?env=test')
@@ -168,8 +158,6 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
   it 'e abre a listagem de exames em formato json' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
 
     # Act
     visit('/index?env=test')

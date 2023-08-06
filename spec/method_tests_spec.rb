@@ -5,6 +5,12 @@ require 'csv'
 require 'json'
 
 describe 'Método que' do
+
+  after :each do
+    conn = PG.connect(host:'postgres', user:'postgres', password:'postgres', dbname:'test')
+    conn.exec('DROP TABLE exams; DROP TABLE tokens; DROP TABLE patients; DROP TABLE doctors;')
+  end
+
   it 'retorna todos os registros do banco de dados como string' do
     # Arrange
     file = File.open('./spec/support/data.csv')
