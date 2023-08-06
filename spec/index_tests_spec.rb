@@ -44,31 +44,6 @@ RSpec.describe 'Acessa a página principal', type: :feature do
     expect(page).to have_css('input#search')
   end
 
-  xit 'e importa os dados de exames' do
-    # Arrange
-
-    # Act
-    visit('/index?env=test')
-    page.attach_file('csv', './spec/support/data.csv', make_visible: true)
-    sleep 1
-    visit('/index?env=test')
-
-    # Assert
-    expect(page).to have_content 'IQCZ17'
-    expect(page).to have_content '05/08/2021'
-    expect(page).to have_content '048.973.170-88'
-    expect(page).to have_content 'Emilly Batista Neto'
-    expect(page).to have_content '11/03/2001'
-    expect(page).to have_content 'Maria Luiza Pires'
-    expect(page).to have_css('button#IQCZ17')
-    expect(page).to have_content '0W9I67'
-    expect(page).to have_content '09/07/2021'
-    expect(page).to have_content '048.108.026-04'
-    expect(page).to have_content 'Juliana dos Reis Filho'
-    expect(page).to have_content '03/07/1995'
-    expect(page).to have_content 'Maria Helena Ramalho'
-  end
-
   it 'e vê os exames listados' do
     # Arrange
 
