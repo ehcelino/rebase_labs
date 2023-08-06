@@ -5,13 +5,6 @@ require 'sinatra'
 require 'capybara'
 require 'selenium-webdriver'
 
-# Capybara.default_driver = :selenium
-# Selenium::WebDriver::Firefox::Binary.path = '/usr/bin/firefox'
-
-# options = Selenium::WebDriver::Firefox::Options.new
-# options.binary = "/usr/bin/firefox" 
-# driver = Selenium::WebDriver.for :firefox, options: options
-
 @options = Selenium::WebDriver::Chrome::Options.new
 @options.add_argument('--headless')
 @options.add_argument('--no-sandbox')
@@ -26,8 +19,6 @@ Capybara.register_driver :remote_chrome do |app|
 end
 
 Capybara.default_driver = :remote_chrome
-# Capybara.server = :puma
-# Capybara.app_host = 'http://0.0.0.0:3000'
 Capybara.app_host = 'http://rebase-labs:3000'
 Capybara.always_include_port = true
 
@@ -43,7 +34,7 @@ RSpec.describe 'Acessa a página principal', type: :feature do
     TransferData.make_transfer(file)
 
     # Act
-    visit('/index')
+    visit('/index?env=test')
 
     # Assert
     expect(page).to have_content 'Aplicativo de exames'
@@ -55,21 +46,16 @@ RSpec.describe 'Acessa a página principal', type: :feature do
     expect(page).to have_css('input#search')
   end
 
-  it 'e vê os exames listados' do
+  xit 'e importa os dados de exames' do
     # Arrange
-    file = File.open('./spec/support/data.csv')
-    TransferData.make_transfer(file)
 
     # Act
-    # sleep 1
     visit('/index?env=test')
-    # sleep 1
-    # page.attach_file('csv', './spec/support/data.csv', make_visible: true)
-    # sleep 15
-    # visit('/tests')
+    page.attach_file('csv', './spec/support/data.csv', make_visible: true)
+    sleep 1
+    visit('/index?env=test')
 
     # Assert
-    page.save_screenshot
     expect(page).to have_content 'IQCZ17'
     expect(page).to have_content '05/08/2021'
     expect(page).to have_content '048.973.170-88'
@@ -77,6 +63,91 @@ RSpec.describe 'Acessa a página principal', type: :feature do
     expect(page).to have_content '11/03/2001'
     expect(page).to have_content 'Maria Luiza Pires'
     expect(page).to have_css('button#IQCZ17')
+    expect(page).to have_content '0W9I67'
+    expect(page).to have_content '09/07/2021'
+    expect(page).to have_content '048.108.026-04'
+    expect(page).to have_content 'Juliana dos Reis Filho'
+    expect(page).to have_content '03/07/1995'
+    expect(page).to have_content 'Maria Helena Ramalho'
+  end
+
+  it 'e vê os exames listados' do
+    # Arrange
+    file = File.open('./spec/support/data.csv')
+    TransferData.make_transfer(file)
+
+    # Act
+    visit('/index?env=test')
+
+    # Assert
+    expect(page).to have_content 'IQCZ17'
+    expect(page).to have_content '05/08/2021'
+    expect(page).to have_content '048.973.170-88'
+    expect(page).to have_content 'Emilly Batista Neto'
+    expect(page).to have_content '11/03/2001'
+    expect(page).to have_content 'Maria Luiza Pires'
+    expect(page).to have_css('button#IQCZ17')
+    expect(page).to have_content '0W9I67'
+    expect(page).to have_content '09/07/2021'
+    expect(page).to have_content '048.108.026-04'
+    expect(page).to have_content 'Juliana dos Reis Filho'
+    expect(page).to have_content '03/07/1995'
+    expect(page).to have_content 'Maria Helena Ramalho'
+  end
+
+  it 'e vê detalhes de um exame' do
+    # Arrange
+    file = File.open('./spec/support/data.csv')
+    TransferData.make_transfer(file)
+
+    # Act
+    visit('/index?env=test')
+    find(:css, '#IQCZ17').click
+
+    # Assert
+    expect(page).to have_content 'IQCZ17'
+    expect(page).to have_content '05/08/2021'
+    expect(page).to have_content '048.973.170-88'
+    expect(page).to have_content 'Emilly Batista Neto'
+    expect(page).to have_content '11/03/2001'
+    expect(page).to have_content 'Maria Luiza Pires'
+    expect(page).to have_content 'B000BJ20J4'
+    expect(page).to have_content 'PI'
+    expect(page).to have_content 'hemácias'
+    expect(page).to have_content '45-52'
+    expect(page).to have_content '97'
+    expect(page).to have_content 'ácido úrico'
+    expect(page).to have_content '15-61'
+    expect(page).to have_content '2'
+    expect(page).to have_button 'Voltar'
+  end
+
+  it 'e busca por um token de exame' do
+    # Arrange
+    file = File.open('./spec/support/data.csv')
+    TransferData.make_transfer(file)
+
+    # Act
+    visit('/index?env=test')
+    fill_in 'search', with: 'IQCZ17'
+    click_on 'Pesquisar'
+
+    # Assert
+    expect(page).to have_content 'IQCZ17'
+    expect(page).to have_content '05/08/2021'
+    expect(page).to have_content '048.973.170-88'
+    expect(page).to have_content 'Emilly Batista Neto'
+    expect(page).to have_content '11/03/2001'
+    expect(page).to have_content 'Maria Luiza Pires'
+    expect(page).to have_content 'B000BJ20J4'
+    expect(page).to have_content 'PI'
+    expect(page).to have_content 'hemácias'
+    expect(page).to have_content '45-52'
+    expect(page).to have_content '97'
+    expect(page).to have_content 'ácido úrico'
+    expect(page).to have_content '15-61'
+    expect(page).to have_content '2'
+    expect(page).to have_button 'Voltar'
   end
 
   it 'e abre a listagem de exames sem formatação' do
@@ -85,18 +156,14 @@ RSpec.describe 'Acessa a página principal', type: :feature do
     TransferData.make_transfer(file)
 
     # Act
-    visit('/index')
+    visit('/index?env=test')
     click_on 'testes sem formatação'
 
     # Assert
-    # page.save_screenshot
     expect(page).to have_content 'IQCZ17'
-    # expect(page).to have_content '05/08/2021'
     expect(page).to have_content '048.973.170-88'
     expect(page).to have_content 'Emilly Batista Neto'
-    # expect(page).to have_content '11/03/2001'
     expect(page).to have_content 'Maria Luiza Pires'
-    # expect(page).to have_css('button#IQCZ17')
   end
 
   it 'e abre a listagem de exames em formato json' do
@@ -105,17 +172,13 @@ RSpec.describe 'Acessa a página principal', type: :feature do
     TransferData.make_transfer(file)
 
     # Act
-    visit('/index')
+    visit('/index?env=test')
     click_on 'testes em formato json'
 
     # Assert
-    # page.save_screenshot
     expect(page).to have_content 'IQCZ17'
-    # expect(page).to have_content '05/08/2021'
     expect(page).to have_content '048.973.170-88'
     expect(page).to have_content 'Emilly Batista Neto'
-    # expect(page).to have_content '11/03/2001'
     expect(page).to have_content 'Maria Luiza Pires'
-    # expect(page).to have_css('button#IQCZ17')
   end
 end

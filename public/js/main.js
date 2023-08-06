@@ -17,8 +17,6 @@ function getInfo(url, details) {
         document.getElementById('noResults').style.display = "none";
 
         data.forEach(function(exam) {
-          // const patientData = { cpf: exam.cpf, name: exam.name, doctor: exam.doctor.name };
-          // const examData = {result_token: exam.result_token, result_date: exam.result_date};
           const tr = document.createElement('tr');
           
           tr.innerHTML += `
@@ -36,6 +34,9 @@ function getInfo(url, details) {
           button.addEventListener('click', function() {
             table.innerHTML = ''
             let queryPath = `http://0.0.0.0:3000/tests/${exam.result_token}`
+            if (GET.env === 'test') {
+              queryPath = `http://rebase-labs:3000/tests/${exam.result_token}`
+            }
             getInfo(queryPath);
             getExamDetails(queryPath);
             button.style.display = "none";
@@ -98,6 +99,9 @@ function searchForm() {
   if(query != ''){
     table.innerHTML = ''
     let queryPath = `http://0.0.0.0:3000/tests/${query}`
+    if (GET.env === 'test') {
+      queryPath = `http://rebase-labs:3000/tests/${query}`
+    }
     getInfo(queryPath, 1);
   }else{
     table.innerHTML = ''
@@ -118,7 +122,11 @@ async function loadFile(event){
   document.getElementById('waitMessage').style.display = "initial"
   const file = event.target.files.item(0)
   const fileBody = await file.text();
-  await fetch(`http://0.0.0.0:3000/import`, {
+  var importURL = `http://0.0.0.0:3000/import`
+  if (GET.env === 'test') {
+    importURL = 'http://rebase-labs:3000/import';
+  }
+  await fetch(importURL, {
     method: 'POST',
     body: `${fileBody}`
   }).
@@ -146,8 +154,6 @@ for (var i = 0, max = query.length; i < max; i++)
 
 if (GET.env === 'test') {
   url = 'http://rebase-labs:3000/tests/fmt=json';
-}else{
-  url = 'http://0.0.0.0:3000/tests/fmt=json';
 }
 
 window.onload = getInfo(url, 0);
