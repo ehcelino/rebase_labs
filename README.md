@@ -64,7 +64,7 @@ Caminho do ambiente de testes do capybara
 
 ## Observação: para rodar os testes do capybara o banco de dados principal do app deve estar populado.
 
-Os testes são realizados pela suite RSpec, com o apoio do Rack e Capybara (usando o driver Selenium). Enquanto os testes normais rodam usando um banco de dados específico, os testes do Capybara dependem do banco de dados principal da aplicação. Estou trabalhando em uma solução para este problema, mas por enquanto para que os testes do Capybara sejam executados é necessário que o banco de dados principal esteja populado.
+Os testes são realizados pela suite RSpec, com o apoio do Rack e Capybara (usando o driver Selenium). Enquanto os testes normais rodam usando um banco de dados específico, os testes do Capybara dependem do banco de dados principal da aplicação. ~~Estou trabalhando em uma solução para este problema, mas por enquanto para que os testes do Capybara sejam executados é necessário que o banco de dados principal esteja populado.~~ De acordo com o github do Capybara, as transações de banco de dados não são compartilhadas entre threads, então os dados adicionados no banco de dados de teste ficam invisíveis para o Capybara. Mais informações [aqui](https://github.com/teamcapybara/capybara#transactions-and-database-setup).
 
 Para executar os testes, em uma janela do terminal digite:
 
