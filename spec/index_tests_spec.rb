@@ -122,13 +122,17 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
     # Act
     visit('/index?env=test')
-    click_on 'testes sem formatação'
+    new_window = page.window_opened_by do
+      click_on 'testes sem formatação'
+    end
 
     # Assert
-    expect(page).to have_content 'IQCZ17'
-    expect(page).to have_content '048.973.170-88'
-    expect(page).to have_content 'Emilly Batista Neto'
-    expect(page).to have_content 'Maria Luiza Pires'
+    page.within_window(new_window) do
+      expect(page).to have_content 'IQCZ17'
+      expect(page).to have_content '048.973.170-88'
+      expect(page).to have_content 'Emilly Batista Neto'
+      expect(page).to have_content 'Maria Luiza Pires'
+    end
   end
 
   it 'e abre a listagem de exames em formato json' do
@@ -136,12 +140,16 @@ RSpec.describe 'Acessa a página principal', type: :feature do
 
     # Act
     visit('/index?env=test')
-    click_on 'testes em formato json'
+    new_window = page.window_opened_by do
+      click_on 'testes em formato json'
+    end
 
     # Assert
-    expect(page).to have_content 'IQCZ17'
-    expect(page).to have_content '048.973.170-88'
-    expect(page).to have_content 'Emilly Batista Neto'
-    expect(page).to have_content 'Maria Luiza Pires'
+    page.within_window(new_window) do
+      expect(page).to have_content 'IQCZ17'
+      expect(page).to have_content '048.973.170-88'
+      expect(page).to have_content 'Emilly Batista Neto'
+      expect(page).to have_content 'Maria Luiza Pires'
+    end
   end
 end
